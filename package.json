@@ -2,9 +2,9 @@
   "name": "ts-container-aws",
   "version": "1.0.0",
   "description": "A simple containerized app writen in TypeScript with CI/CD using Github Actions and deployed to AWS",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "ts-node src/app.ts",
+    "dev": "ts-node src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,7 +15,12 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.8",
+    "@types/supertest": "^2.0.16",
     "dotenv": "^16.3.1",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }
