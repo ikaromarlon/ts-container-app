@@ -1,0 +1,11 @@
+.git
+coverage
+dist
+node_modules
+tests
+.dockerignore
+.env.example
+.gitignore
+Dockerfile
+jest.config.js
+README.md
