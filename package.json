@@ -4,6 +4,7 @@
   "description": "A simple containerized app writen in TypeScript with CI/CD using Github Actions and deployed to AWS",
   "main": "src/index.js",
   "scripts": {
+    "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
     "test": "jest --coverage",
     "build": "rimraf dist && tsc"
