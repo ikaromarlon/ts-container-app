@@ -2,6 +2,9 @@
   "name": "typescript-aws-container-demo",
   "version": "1.0.0",
   "description": "A simple containerized REST API built with TypeScript and Express",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "main": "src/index.js",
   "scripts": {
     "start": "node dist/index.js",
