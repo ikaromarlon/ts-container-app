@@ -1,7 +1,7 @@
 {
-  "name": "ts-container-aws",
+  "name": "typescript-aws-container-demo",
   "version": "1.0.0",
-  "description": "A simple containerized app writen in TypeScript with CI/CD using Github Actions and deployed to AWS",
+  "description": "A simple containerized REST API built with TypeScript and Express",
   "main": "src/index.js",
   "scripts": {
     "start": "node dist/index.js",
