@@ -8,4 +8,14 @@ describe('Test app', () => {
     expect(res.body).toEqual({ message: 'hello world' })
   })
 
+  test('Should return a list of fruits', async () => {
+    const res = await request(app).get('/fruits')
+    expect(res.body).toEqual([
+      'tomato',
+      'banana',
+      'avocado',
+      'grape'
+    ])
+  })
+
 })
