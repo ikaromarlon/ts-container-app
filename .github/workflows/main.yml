@@ -13,6 +13,7 @@ permissions:
   contents: read
 
 env:
+  TASK_DEFINITION_NAME: ${{ github.event.repository.name }}-task
   TASK_DEFINITION_FILE: task-definition.json
 
 jobs:
@@ -51,19 +52,30 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ${{ github.event.repository.name }}
-          IMAGE_TAG: latest
-          # IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> "$GITHUB_ENV"
+          echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
         
-      - name: Get container task definition
-        id: get-task-definition
+      - name: Get task definition
         run: |
           aws ecs describe-task-definition \
-            --task-definition ${{ github.event.repository.name }}-task \
+            --task-definition ${{ env.TASK_DEFINITION_NAME }} \
             --query taskDefinition > ${{ env.TASK_DEFINITION_FILE }}
+      
+      - name: Update task definition
+        id: update-task-definition
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.TASK_DEFINITION_FILE }}
+          container-name: ${{ env.TASK_DEFINITION_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
 
-      # - name: Deploy to ECS
-      #   run: aws ecs update-service --region ${{ vars.AWS_REGION }} --cluster ${{ vars.ECS_CLUSTER }} --service ${{ vars.ECS_SERVICE }} --force-new-deployment
+      - name: Deploy
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.update-task-definition.outputs.task-definition }}
+          service: ${{ github.event.repository.name }}-service
+          cluster: ${{ github.event.repository.name }}-cluster
+          wait-for-service-stability: true
