@@ -8,7 +8,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
   [
     {
       "name": "${var.ecs_task_name}",
-      "image": "${var.ecr_repo_url}",
+      "image": "${var.ecr_repo_url}:latest",
       "essential": true,
       "portMappings": [
         {
@@ -35,7 +35,7 @@ resource "aws_ecs_service" "esc_service" {
   launch_type     = "FARGATE"
   desired_count   = 1
 
-  depends_on = [ aws_lb_target_group.target_group, aws_alb.application_load_balancer ]
+  depends_on = [aws_lb_target_group.target_group, aws_alb.application_load_balancer]
 
   load_balancer {
     target_group_arn = aws_lb_target_group.target_group.arn
