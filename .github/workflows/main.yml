@@ -12,6 +12,9 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  TASK_DEFINITION_FILE: task-definition.json
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -49,10 +52,18 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ${{ github.event.repository.name }}
           IMAGE_TAG: latest
+          # IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
           echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> "$GITHUB_ENV"
+        
+      - name: Get container task definition
+        id: get-task-definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition ${{ github.event.repository.name }}-task \
+            --query taskDefinition > ${{ env.TASK_DEFINITION_FILE }}
 
       # - name: Deploy to ECS
       #   run: aws ecs update-service --region ${{ vars.AWS_REGION }} --cluster ${{ vars.ECS_CLUSTER }} --service ${{ vars.ECS_SERVICE }} --force-new-deployment
