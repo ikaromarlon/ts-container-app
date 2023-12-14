@@ -1,7 +1,0 @@
-# Local .terraform files
-**/.terraform/*
-.terraform.lock.hcl
-terraform.tfstate.backup
-
-# Crash log files
-crash.log
