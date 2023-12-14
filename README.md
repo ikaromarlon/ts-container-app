@@ -1,8 +1,7 @@
-# typescript-aws-container-demo
+# ts-container-app
 A simple containerized REST API built with TypeScript and Express.
 
-[![CI](https://github.com/ikaromarlon/typescript-aws-container-demo/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/ikaromarlon/typescript-aws-container-demo/actions/workflows/main.yml)
-[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
+[![CI](https://github.com/ikaromarlon/ts-container-app/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/ikaromarlon/ts-container-app/actions/workflows/main.yml)
 
 ### Pourpose
 Build a simple application that will run in a Docker container and be deployed to AWS ECS everytime the *main* branch is updated, using the following CI/CD concepts running on Github Actions:
@@ -17,6 +16,7 @@ Build a simple application that will run in a Docker container and be deployed t
    - update the container service (AWS ECS) with the new artifact;
 
 ### Infrastructre
+Repository: [ts-container-app-infra](https://github.com/ikaromarlon/ts-container-app-infra)
 
 The entire infrastructure is hosted on AWS and created using Terraform.
 

@@ -1,5 +1,5 @@
 {
-  "name": "typescript-aws-container-demo",
+  "name": "ts-container-app",
   "version": "1.0.0",
   "description": "A simple containerized REST API built with TypeScript and Express",
   "engines": {
