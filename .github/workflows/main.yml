@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  TASK_DEFINITION_NAME: ${{ github.event.repository.name }}-task
+  APP: ${{ github.event.repository.name }}
   TASK_DEFINITION_FILE: task-definition.json
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
@@ -51,7 +51,7 @@ jobs:
         id: build-image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: ${{ github.event.repository.name }}
+          REPOSITORY: ${{ env.APP }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
@@ -61,7 +61,7 @@ jobs:
       - name: Get task definition
         run: |
           aws ecs describe-task-definition \
-            --task-definition ${{ env.TASK_DEFINITION_NAME }} \
+            --task-definition ${{ env.APP }} \
             --query taskDefinition > ${{ env.TASK_DEFINITION_FILE }}
       
       - name: Update task definition
@@ -69,13 +69,13 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ${{ env.TASK_DEFINITION_FILE }}
-          container-name: ${{ env.TASK_DEFINITION_NAME }}
+          container-name: ${{ env.APP }}
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.update-task-definition.outputs.task-definition }}
-          service: ${{ github.event.repository.name }}-service
-          cluster: ${{ github.event.repository.name }}-cluster
+          service: ${{ env.APP }}-service
+          cluster: ${{ env.APP }}-cluster
           wait-for-service-stability: true
