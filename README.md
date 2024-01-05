@@ -2,6 +2,7 @@
 A simple containerized REST API built with TypeScript and Express.
 
 [![CI](https://github.com/ikaromarlon/ts-container-app/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/ikaromarlon/ts-container-app/actions/workflows/main.yml)
+[![Coverage Status](https://coveralls.io/repos/github/ikaromarlon/ts-container-app/badge.svg?branch=master)](https://coveralls.io/github/ikaromarlon/ts-container-app?branch=master)
 
 ### Pourpose
 Build a simple application that will run in a Docker container and be deployed to AWS ECS everytime the *main* branch is updated, using the following CI/CD concepts running on Github Actions:
